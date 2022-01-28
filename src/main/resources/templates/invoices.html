@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<style>
+    .pagination {
+        display: inline-block;
+    }
+
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 5px 5px;
+        text-decoration: none;
+    }
+
+    .pagination a.active {
+        background-color: gray;
+        color: white;
+        border-radius: 2px;
+    }
+</style>
+<head>
+    <title>Invoice List</title>
+</head>
+<body>
+<h1>Invoice List</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>cost</th>
+        <th>tax</th>
+        <th>cost after tax</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="invoice, iStat : ${invoices.content}"
+        th:style="${iStat.odd}? 'font-weight: bold;'"
+        th:alt-title="${iStat.even}? 'even' : 'odd'">
+        <td th:text="${invoice.id}" />
+        <td th:text="${invoice.invoiceEntity}" />
+        <td th:text="${invoice.invoiceCost}" />
+        <td th:text="${invoice.tax}" />
+        <td th:text="${invoice.invoiceCostAfterTax}" />
+    </tr>
+    </tbody>
+</table>
+<div th:if="${invoice.totalPages > 0}" class="pagination"
+     th:each="pageNumber : ${pageNumbers}">
+    <a th:href="@{/listBooks(size=${invoice.size}, page=${pageNumber})}"
+       th:text=${pageNumber}
+       th:class="${pageNumber==invoice.number + 1} ? active"></a>
+</div>
+
+</body>
+</html>
